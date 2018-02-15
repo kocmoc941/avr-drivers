@@ -43,6 +43,51 @@ analog_comparator:
 i2c:
 spm_ready:
 
+wait_sending:
+    wait_:
+    in r16, TWCR
+    sbrs r16, TWINT
+    rjmp wait_
+    ret
+
+ERROR:
+    ret
+
+i2c_send:
+    ldi r16, (1<<TWINT)|(1<<TWSTA)|(1<<TWEN)
+    out TWCR, r16
+    rcall wait_sending
+
+    in r16, TWSR
+    andi r16, 0xF8
+    cpi r16, 0x08 ;START
+    brne ERROR
+
+    ldi r16, 0x13; SLA_W
+    out TWDR, r16
+    ldi r16, (1<<TWINT)|(1<<TWEN)
+    out TWCR, r16
+    rcall wait_sending
+
+    in r16, TWSR
+    andi r16, 0xF8
+    cpi r16, 0x18 ;MT_SLA_ACK
+    brne ERROR
+
+    ldi r16, 0x11; DATA
+    out TWDR, r16
+    ldi r16, (1<<TWINT)|(1<<TWEN)
+    out TWCR, r16
+    rcall wait_sending
+
+    in r16, TWSR
+    andi r16, 0xF8
+    cpi r16, 0x28; MT_DATA_ACK
+    brne ERROR
+
+    ldi r16, (1<<TWINT)|(1<<TWEN)|(1<<TWSTO)
+    out TWCR, r16
+    ret
 
 reset:
     ldi r16, low(RAMEND)
@@ -50,15 +95,19 @@ reset:
     ldi r16, high(RAMEND)
     out sph, r16
 
-    ser r16
-    out DDRC, r16
+    ; i2c init
+    clr r16
+    out TWBR, r16
+    ldi r16, (1<<TWPS0)|(1<<TWPS1)
+    out TWSR, r16
+
     main:
-        sbi PORTC, PINC0
-        ldi r16, 0xF0 
+        rcall i2c_send 
+        ldi r16, 0xFF 
         next_loop1: dec r16
         brne next_loop1
-        cbi PORTC, PINC0
-        ldi r16, 0xF0
+        rcall i2c_send
+        ldi r16, 0xFF
         next_loop2: dec r16
         brne next_loop2
     rjmp main
