@@ -1,43 +1,80 @@
 .list
-.org $00 rjmp reset
-.org $01 rjmp int0_int
-.org $11 rjmp i2c_int
-.org $13
-.include "I2C_slave.s"
+
+.cseg
+    ;interrupt vectors
+    .org 0x00 rjmp reset
+    .org 0x0A rjmp spi_stc_complete
+    .org 0x11 rjmp i2c
+
+.org 0x13 
 .include "USART.s"
+.include "SPI_master.s"
+error_str: .db "data: ", $0
 
+spi_stc_complete:
+i2c:
+
+print:
+    lpm r16, Z+
+    rcall usart_send
+    cpi r16, 0
+    brne print
+    ret
+    
 reset:
-    ldi r16, 0b0110000
-    lsl r16
-    rcall i2c_init_sl
-
-    .equ F_CPU = 8000000
-    .equ BAUD = 1200
-    ldi r17, high(F_CPU/(BAUD*16)-1)
-    ldi r16, low(F_CPU/(BAUD*16)-1)
+.equ F_CPU = 8000000
+.equ BAUD = 1200
+.equ EEPROM_ADDRESS = 0b0110000
+    ldi r17, high(F_CPU/(BAUD*16) - 1)
+    ldi r16, low (F_CPU/(BAUD*16) - 1)
     rcall usart_init
+    ldi ZH, high(error_str*2)
+    ldi ZL, low(error_str*2)
+    rcall print
 
-    ldi r16, (ISC10<<0) ; rising
-    out MCUCR, r16
-    ldi r16, (1<<INT0) ; INT0
-    out GICR, r16
-
-    cbi DDRD, DDD2
-    sbi PORTD, PORTD2 ; pull-up on
-
-    sei
+    clr r16
+    rcall i2c_init
     main:
+    ; write EEPROM
+    rcall i2c_start
+    ldi r16, EEPROM_ADDRESS
+    lsl r16
+    ori r16, 0
+    rcall i2c_send_byte
+    rcall i2c_get_status
+    rcall usart_send
+    rcall delay
+    ldi r16, $11
+    rcall i2c_send_byte
+    rcall i2c_get_status
+    rcall usart_send
+    rcall delay
+    ldi r16, $F0
+    rcall i2c_send_byte
+    rcall i2c_get_status
+    rcall usart_send
+    rcall i2c_stop
+    rcall delay
+    ldi r16, $4
+    rcall usart_send
+    
     rjmp main
 
-int0_int: 
-    cli
-        ldi r16, 1
-        rcall usart_send
-    reti
 
-i2c_int:
-    cli
-        ldi r16, TWSR
-        andi r16, $F8
-        rcall usart_send
-    reti
+    delay:
+        ldi r16, $FF
+        loop:
+            ldi r17, $FF
+            inner17:
+                ldi r18, $6
+                inner18:
+                    dec r18
+                    tst r18
+                    brne inner18
+                dec r17
+                tst r17
+                brne inner17
+            dec r16
+            tst r16
+            brne loop
+        ret
