@@ -1,26 +1,18 @@
 .list
 
+.eseg
+    test: .db 1,2,3,0
+.dseg
+    buffer: .byte $50
 .cseg
     ;interrupt vectors
     .org 0x00 rjmp reset
-    .org 0x0A rjmp spi_stc_complete
-    .org 0x11 rjmp i2c
 
 .org 0x13 
 .include "USART.s"
-.include "SPI_master.s"
-error_str: .db "data: ", $0
+.include "SPI.s"
+error_str: .db "data:", $0
 
-spi_stc_complete:
-i2c:
-
-print:
-    lpm r16, Z+
-    rcall usart_send
-    cpi r16, 0
-    brne print
-    ret
-    
 reset:
 .equ F_CPU = 8000000
 .equ BAUD = 1200
@@ -28,36 +20,12 @@ reset:
     ldi r17, high(F_CPU/(BAUD*16) - 1)
     ldi r16, low (F_CPU/(BAUD*16) - 1)
     rcall usart_init
-    ldi ZH, high(error_str*2)
-    ldi ZL, low(error_str*2)
-    rcall print
 
-    clr r16
-    rcall i2c_init
+    rcall spi_init_sl
     main:
-    ; write EEPROM
-    rcall i2c_start
-    ldi r16, EEPROM_ADDRESS
-    lsl r16
-    ori r16, 0
-    rcall i2c_send_byte
-    rcall i2c_get_status
-    rcall usart_send
-    rcall delay
-    ldi r16, $11
-    rcall i2c_send_byte
-    rcall i2c_get_status
-    rcall usart_send
-    rcall delay
-    ldi r16, $F0
-    rcall i2c_send_byte
-    rcall i2c_get_status
-    rcall usart_send
-    rcall i2c_stop
-    rcall delay
-    ldi r16, $4
-    rcall usart_send
-    
+        rcall spi_receive
+        rcall usart_send
+        rcall spi_send
     rjmp main
 
 

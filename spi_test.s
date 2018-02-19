@@ -16,8 +16,15 @@ reset:
     rcall usart_init
     ldi r16, 0
     rcall usart_send
+
+    sbi DDRB, SS
+    cbi PORTB, SS
     main:
     ldi r16, $A
     rcall spi_send
+    clr r16
+    rcall spi_receive
+    tst r16
+    breq main
     rcall usart_send
     rjmp main

@@ -4,7 +4,7 @@
 .equ MOSI = DDB3
 .equ MISO = DDB4
 .equ SCK = DDB5
-.equ DDR_SPI = PORTB
+.equ DDR_SPI = DDRB
 
 spi_wait:
     sbis SPSR, SPIF
