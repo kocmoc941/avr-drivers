@@ -1,4 +1,4 @@
-.list
+.nolist
 
 .eseg
     test: .db 1,2,3,0
@@ -11,6 +11,7 @@
 .org 0x13 
 .include "USART.s"
 .include "SPI.s"
+.list
 error_str: .db "data:", $0
 
 reset:

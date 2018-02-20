@@ -1,4 +1,3 @@
-
 .cseg
 .org $0 rjmp reset
 
