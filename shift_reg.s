@@ -46,6 +46,10 @@ flash_led:
     mov r17, r16
     clr r16
     next_bit:
+        tst r17
+        brne success
+        mov r17, r16
+        success:
         sbrc r17, PORTC0
         sbi PORTC, PORTC0
         sbrs r17, PORTC0
@@ -53,7 +57,7 @@ flash_led:
         lsr r17
         rcall clk
         inc r16
-        cpi r16, $8
+        cpi r16, $10
         brne next_bit
         rcall latch
         rcall delay
