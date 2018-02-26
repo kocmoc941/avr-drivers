@@ -1,4 +1,4 @@
-# Writing all output to: C:\Users\kocmoc\Downloads\AVR2\dumper.log
+# Writing all output to: C:\Users\godd\Downloads\atmega8_test\dumper.log
 set pad_wire_necking on
 bus diagonal
 fanout 5
