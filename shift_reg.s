@@ -22,12 +22,18 @@
 
         ldi r16, $1
         ldi r17, $80
+	sbi DDRD, DDD0
+	sbi DDRD, DDD1
         main:
+	    sbi PORTD, PORTD0
+	    cbi PORTD, PORTD1
             rcall flash_led
             rol r16
             tst r16
             brne main
 
+	    sbi PORTD, PORTD1
+	    cbi PORTD, PORTD0
             mov r16, r17
             ;rjmp skip_backward
             back_loop:
