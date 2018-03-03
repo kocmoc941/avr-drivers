@@ -1,2 +1,12 @@
 *.swp
 *.hex
+*.dmp
+*.[DL]BK
+*.rte
+*.DO
+*.EDF
+*.PWI
+*.SDF
+*.log
+*.sts
+*.lst
