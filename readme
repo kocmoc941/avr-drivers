@@ -1,0 +1,6 @@
+
+    projects:
+        * load circuit for power supply unit
+        * adapter for jumpers 50/60Hz (nes)
+        * programmer for atmega8 (adapter)
+        * dumper for nes cartridge's
