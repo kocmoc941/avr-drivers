@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <WORKSPACE>
- <FRAME activewindow="0">
+ <FRAME activewindow="1">
   <PLACEMENT>2c0000000000000001000000ffffffffffffffffffffffffffffffffa407000000000000ae0e000092040000</PLACEMENT>
   <WINDOW type="default" module="ISIS"/>
+  <WINDOW type="default" module="ARES"/>
  </FRAME>
  <MODULE name="VSMDEBUG">
   <PWI/>
