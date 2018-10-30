@@ -11,3 +11,6 @@
 *.sts
 *.lst
 *[dD]ebug
+*.workspace
+*.swp
+*.DBK
