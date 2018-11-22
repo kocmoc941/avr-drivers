@@ -1,10 +1,10 @@
 .nolist
 
 .eseg
-    test: .db 1,2,3,0
+    test: .byte 124
 .dseg
-    ;buffer: .byte '1'
-    buffer: .db "test",0
+    .org 1011
+    var: .byte 12
 .cseg
     ;interrupt vectors
     .org 0x00 rjmp reset
@@ -17,9 +17,26 @@
 .list
 error_str: .db "data:", $0
 
+
+print_data:
+	lpm r16, Z+
+	rcall usart_send
+	tst r16
+	brne print_data
+
+	ret
+
+print_var:
+	ld r16, z+
+	rcall usart_send
+	tst r16
+	brne print_var
+
+	ret
+
 reset:
 .equ F_CPU = 8000000
-.equ BAUD = 4800
+.equ BAUD = 38400
     ldi r30, low(RAMEND)
     out SPL, r30
     ldi r30, high(RAMEND)
@@ -29,40 +46,56 @@ reset:
     ldi r16, low (F_CPU/(BAUD*16) - 1)
     rcall usart_init
 
-ldi ZL, low(buffer)
-ldi ZH, high(buffer)
-ldi r20, 0
+	; save var
+	ldi zl, low(var)
+	ldi zh, high(var)
+	ldi xl, 10
+	ldi r17, '0'
+	next_load:
+		st z+, r17
+		inc r17
+		dec xl
+		tst xl
+		brne next_load
+	; add eol and zero
+	ldi r17, $0A
+	st z+, r17
+	ldi r17, $0D
+	st z+, r17
+	ldi r17, $0
+	st z+, r17
+sei
+
 main:
     ldi r16, 200
     rcall delay_ms
-    ;add ZL, r20
-    ld r16, Z
-    cpi r16, 0
-    brne skip
-    ldi ZL, low(buffer)
-    clr r20
-    ld r16, Z
-    skip:
-    inc r20
-    ldi r16, '0'
-    rcall usart_send
+	ldi ZL, low(error_str * 2)
+	ldi ZH, high(error_str * 2)
+sbi UCSRB, TXCIE
+    rcall print_data
+cbi UCSRB, TXCIE
+
+	ldi ZL, low(var)
+	ldi ZH, high(var)
+	rcall print_var
+
 rjmp main
 
 delay_ms:
-    .equ operation = 1600
-    ldi yl, high(operation)
-    mul yl, r16
-    mov yl, r0
+	.equ nst0 = 11
+	.equ nst1 = 99
+    ldi r20, nst0
+    ldi r21, nst1
+    ldi r22, 100 ; 100 ms
     _delay_ms:
-        dec yl
-        ldi yh, low(operation)
-        mul yh, r16
-        mov yh, r0
-        __delay_ms:
-            dec yh
-            brne __delay_ms
-    cpi yl, $0
-    brne _delay_ms
+	dec r20
+	brne _delay_ms
+	ldi r20, nst0
+	    dec r21
+            brne _delay_ms
+	    ldi r21, nst1
+		dec r22
+		brne _delay_ms
 ret
 
 usart_rx_int:
@@ -72,5 +105,9 @@ usart_datae_int:
 reti
 
 usart_tx_int:
+	push r16
+	ldi r16, '-'
+	rcall usart_send
+	pop r16
 reti
 
