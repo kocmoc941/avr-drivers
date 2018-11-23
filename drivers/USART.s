@@ -1,3 +1,6 @@
+#ifndef _USART_S_
+#define _USART_S_
+
 .include "m8def.inc"
 
 usart_init:
@@ -20,3 +23,5 @@ usart_receive:
     rjmp usart_receive
     in r16, UDR
     ret
+
+#endif ; _USART_S_
