@@ -10,7 +10,6 @@
 .eseg
     test: .byte 124
 .dseg
-    .org 1010
     var: .byte 3
     error_status: .byte 1
 .cseg
@@ -23,11 +22,17 @@
 .org 0x13 
 .include "USART.s"
 .include "utils.s"
+.include "defines.inc"
 
 .list
 msg_data: .db "data:", $0
 msg_error: .db "error:", $0, $0
 msg_address: .db "big-endian:", $0
+msg_init: .db "initialize...", $0
+msg_before: .db "first:", 0, 0
+msg_after: .db "second:", 0
+msg_wdt_reset: .db "watchdog reset", 0, 0
+
 
 reset:
     ldi r16, low(RAMEND)
@@ -49,38 +54,48 @@ reset:
     ldi r16, 255
     st Z+, r16
 
-main:
-    ldi r16, 200
-    rcall delay_ms
-    ldi ZL, low(msg_data * 2)
-    ldi ZH, high(msg_data * 2)
-    rcall print_data
+in r16, MCUCSR
+cpi r16, 1<<WDRF
+brne _init
+PRINTD msg_wdt_reset
+rjmp _def
+    _init:
+    PRINTD msg_init
+    _def:
+    rcall print_eol
 
-    ldi ZL, low(msg_address * 2)
-    ldi ZH, high(msg_address * 2)
-    rcall print_data
+    ;START_WDT 4
 
-    ldi r17, 3 ; size of var
-    ldi ZL, low(var)
-    ldi ZH, high(var)
-    rcall print_byte
+_main:
+;wdr
+    ldi r16, 20
+    DELAY 11, 99, 24
+    PRINTD msg_data
+
+    PRINTD msg_address
+
+    PRINTV var, 3
 
     rcall print_eol
 
-rjmp main
+    ldi ZL, 0
+    ldi ZH, 0
+    rcall in_eeprom_read
+    rcall usart_send
 
-delay_ms:
-    ldi r20, 5
-    ldi r21, 15
-    ldi r22, 242 ; 100 ms
-    _delay_ms:
-        dec r22
-        brne _delay_ms
-        dec r21
-        brne _delay_ms
-        dec r20
-        brne _delay_ms
-ret
+    cpi r16, 8
+        brne _n1
+        ldi r16, '1'
+        rcall usart_send
+        rjmp def
+    _n1:
+        ldi r16, 8
+        rcall in_eeprom_write
+        ldi r16, '0'
+        rcall usart_send
+    def:
+    rcall print_eol
+rjmp _main
 
 usart_rx_int:
 reti

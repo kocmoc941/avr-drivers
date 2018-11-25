@@ -2,6 +2,30 @@
 #define _UTILS_S_
 
 .include "USART.s"
+
+in_eeprom_write:
+    _in_eeww:
+        sbic EECR, EEWE
+        rcall _in_eeww
+    out EEARL, ZL
+    out EEARH, ZH
+    out EEDR, r16
+    sbi EECR, EEMWE
+    sbi EECR, EEWE
+
+    ret
+
+in_eeprom_read:
+    _in_eerw:
+        sbic EECR, EEWE
+        rcall _in_eerw
+    out EEARL, ZL
+    out EEARH, ZH
+    sbi EECR, EERE
+    in r16, EEDR
+
+    ret
+
 print_data:
     lpm r16, Z+
     rcall usart_send
