@@ -22,7 +22,7 @@ in_eeprom_read:
     out EEARL, ZL
     out EEARH, ZH
     sbi EECR, EERE
-    in r16, EEDR
+    in r20, EEDR
 
     ret
 

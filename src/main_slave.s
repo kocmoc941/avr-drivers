@@ -81,6 +81,7 @@ _main:
     ldi ZL, 0
     ldi ZH, 0
     rcall in_eeprom_read
+    mov r16, r20
     rcall usart_send
 
     cpi r16, 8
