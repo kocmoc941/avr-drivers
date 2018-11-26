@@ -4,36 +4,22 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-AFXTRACE	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	file:	signature:(BOOL res)
-CmainApp	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp	signature:()
-CmainApp	.\TestToolUsart\main\main\main.h	/^/;"	c	inherits:CWinApp
-CmainApp::CmainApp	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp	signature:()
-CmainApp::InitInstance	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp	signature:()
-CmainApp::m_dlg	.\TestToolUsart\main\main\main.h	/^/;"	m	class:CmainApp	access:public
-DoDataExchange	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(CDataExchange *cDx)
+AFXTRACE	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	file:
+CmainApp	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp
+CmainApp	.\TestToolUsart\main\main\main.h	/^/;"	c
+DoDataExchange	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
 ERROR	.\drivers\I2C_master.s	/^ERROR:$/;"	l
 IDC_LOG	.\TestToolUsart\main\main\Resource.h	6;"	d
 IDC_OPEN_PORT	.\TestToolUsart\main\main\Resource.h	8;"	d
 IDC_PORT	.\TestToolUsart\main\main\Resource.h	7;"	d
 IDD_DIALOG1	.\TestToolUsart\main\main\Resource.h	5;"	d
-InitInstance	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp	signature:()
-MainDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(UINT nIDTemplate, CWnd* pParentWnd)
-MainDialog	.\TestToolUsart\main\main\mainDlg.h	/^/;"	c	inherits:CDialogEx
-MainDialog::DoDataExchange	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(CDataExchange *cDx)
-MainDialog::MainDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(UINT nIDTemplate, CWnd* pParentWnd)
-MainDialog::OnInitDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
-MainDialog::PreTranslateMessage	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(MSG* pMsg)
-MainDialog::m_connected	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::m_log	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::m_openButton	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::m_port	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::m_portHandle	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::m_thr	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-MainDialog::openPort	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
-MainDialog::thread	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
-OnInitDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
+InitInstance	.\TestToolUsart\main\main\main.cpp	/^/;"	f	class:CmainApp
+MainDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
+MainDialog	.\TestToolUsart\main\main\mainDlg.h	/^/;"	c
+OnInitDialog	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
+PRINTD	.\src\main_slave.s	/^PRINTD msg_wdt_reset$/;"	l
 PRINT_RAW	.\src\main_slave.s	/^#define PRINT_RAW$/;"	d
-PreTranslateMessage	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:(MSG* pMsg)
+PreTranslateMessage	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
 VC_EXTRALEAN	.\TestToolUsart\main\main\stdafx.h	9;"	d
 _4	.\tools\utils.s	/^    _4:$/;"	l
 _AFX_ALL_WARNINGS	.\TestToolUsart\main\main\stdafx.h	17;"	d
@@ -44,14 +30,18 @@ _APS_NEXT_SYMED_VALUE	.\TestToolUsart\main\main\Resource.h	17;"	d
 _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	.\TestToolUsart\main\main\stdafx.h	14;"	d
 _USART_S_	.\drivers\USART.s	/^#define _USART_S_$/;"	d
 _UTILS_S_	.\tools\utils.s	/^#define _UTILS_S_$/;"	d
+_def	.\src\main_slave.s	/^    _def:$/;"	l
 _in_eerw	.\tools\utils.s	/^    _in_eerw:$/;"	l
 _in_eeww	.\tools\utils.s	/^    _in_eeww:$/;"	l
+_init	.\src\main_slave.s	/^    _init:$/;"	l
 _main	.\src\main_slave.s	/^_main:$/;"	l
 _n1	.\src\main_slave.s	/^    _n1:$/;"	l
 adc_conversion_complete	.\src\main.s	/^adc_conversion_complete:$/;"	l
 analog_comparator	.\src\main.s	/^analog_comparator:$/;"	l
 back_loop	.\drivers\shift_reg.s	/^            back_loop:$/;"	l
+brne	.\src\main_slave.s	/^brne _init$/;"	l
 clk	.\drivers\shift_reg.s	/^clk:$/;"	l
+cpi	.\src\main_slave.s	/^cpi r16, 1<<WDRF$/;"	l
 def	.\src\main_slave.s	/^    def:$/;"	l
 delay	.\drivers\shift_reg.s	/^delay:$/;"	l
 delay	.\src\main.s	/^    delay:$/;"	l
@@ -71,6 +61,7 @@ i2c_send_nack	.\drivers\I2C_master.s	/^i2c_send_nack:$/;"	l
 i2c_start	.\drivers\I2C_master.s	/^i2c_start:$/;"	l
 i2c_stop	.\drivers\I2C_master.s	/^i2c_stop:$/;"	l
 i2c_stop_sl	.\drivers\I2C_slave.s	/^i2c_stop_sl:$/;"	l
+in	.\src\main_slave.s	/^in r16, MCUCSR$/;"	l
 in_eeprom_read	.\tools\utils.s	/^in_eeprom_read:$/;"	l
 in_eeprom_write	.\tools\utils.s	/^in_eeprom_write:$/;"	l
 inner17	.\src\main.s	/^        inner17:$/;"	l
@@ -80,13 +71,13 @@ int1_int	.\src\main.s	/^int1_int:$/;"	l
 latch	.\drivers\shift_reg.s	/^latch:$/;"	l
 loop	.\src\main.s	/^        loop:$/;"	l
 loop_next	.\drivers\shift_reg.s	/^    loop_next:$/;"	l
-m_connected	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-m_dlg	.\TestToolUsart\main\main\main.h	/^/;"	m	class:CmainApp	access:public
-m_log	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-m_openButton	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-m_port	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-m_portHandle	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
-m_thr	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog	access:private
+m_connected	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
+m_dlg	.\TestToolUsart\main\main\main.h	/^/;"	m	class:CmainApp
+m_log	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
+m_openButton	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
+m_port	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
+m_portHandle	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
+m_thr	.\TestToolUsart\main\main\mainDlg.h	/^/;"	m	class:MainDialog
 main	.\drivers\shift_reg.s	/^        main:$/;"	l
 main	.\src\main.s	/^    main:$/;"	l
 msg_address	.\src\main_slave.s	/^msg_address: .db "big-endian:", $0$/;"	l
@@ -99,7 +90,7 @@ msg_wdt_reset	.\src\main_slave.s	/^msg_wdt_reset: .db "watchdog reset", 0, 0$/;"
 new	.\TestToolUsart\main\main\main.cpp	6;"	d	file:
 new	.\TestToolUsart\main\main\mainDlg.cpp	7;"	d	file:
 next_bit	.\drivers\shift_reg.s	/^    next_bit:$/;"	l
-openPort	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
+openPort	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
 print	.\src\main.s	/^print:$/;"	l
 print_byte	.\tools\utils.s	/^print_byte:$/;"	l
 print_data	.\tools\utils.s	/^print_data:$/;"	l
@@ -108,6 +99,7 @@ reset	.\drivers\shift_reg.s	/^    reset:$/;"	l
 reset	.\src\main.s	/^reset:$/;"	l
 reset	.\src\main_slave.s	/^reset:$/;"	l
 reti	.\src\main_slave.s	/^reti$/;"	l
+rjmp	.\src\main_slave.s	/^rjmp _def$/;"	l
 rjmp	.\src\main_slave.s	/^rjmp _main$/;"	l
 skip_backward	.\drivers\shift_reg.s	/^            skip_backward:$/;"	l
 spi_init	.\drivers\SPI.s	/^spi_init:$/;"	l
@@ -120,7 +112,7 @@ spm_ready	.\src\main.s	/^spm_ready:$/;"	l
 success	.\drivers\shift_reg.s	/^        success:$/;"	l
 test	.\src\main_slave.s	/^    test: .byte 124$/;"	l
 theApp	.\TestToolUsart\main\main\main.cpp	/^/;"	v
-thread	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog	signature:()
+thread	.\TestToolUsart\main\main\mainDlg.cpp	/^/;"	f	class:MainDialog
 timer0_ovf	.\src\main.s	/^timer0_ovf:$/;"	l
 timer1_capt	.\src\main.s	/^timer1_capt:$/;"	l
 timer1_compa	.\src\main.s	/^timer1_compa:$/;"	l

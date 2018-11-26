@@ -33,12 +33,12 @@ set showmatch
 set smartindent
 set statusline=%f%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
 set tabstop=4
+set tags=./tags
 set ttimeout
 set ttimeoutlen=100
 set visualbell
 set wildmenu
 set wildmode=list:longest,longest:full
-set window=39
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -47,7 +47,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 src/main_slave.s
+badd +1 src/main_slave.s
 argglobal
 silent! argdel *
 $argadd src/main_slave.s
@@ -175,11 +175,11 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 124 - ((28 * winheight(0) + 19) / 38)
+let s:l = 104 - ((8 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-124
+104
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && s:wipebuf != bufnr('%')

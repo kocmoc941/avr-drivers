@@ -3,10 +3,26 @@
 
 .include "USART.s"
 
+; @0 - eeprom address
+; @1 - data for eeprom write
+.macro EEPROM_W
+    ldi ZL, low(@0)
+    ldi ZH, high(@0)
+    ldi r16, @1
+    rcall in_eeprom_write
+.endmacro
+
+; @0 - eeprom address
+.macro EEPROM_R
+    ldi ZL, low(@0)
+    ldi ZH, high(@0)
+    rcall in_eeprom_read
+.endmacro
+
 ; @0 - variable
 .macro PRINTD
-    ldi zl, low(@0 * 2)
-    ldi zh, high(@0 * 2)
+    ldi ZL, low(@0 * 2)
+    ldi ZH, high(@0 * 2)
     rcall print_data
 .endmacro
 
@@ -17,6 +33,23 @@
     ldi ZL, low(@0)
     ldi ZH, high(@0)
     rcall print_byte
+.endmacro
+
+; @0 - register
+.macro PRINTR
+    mov r16, @0
+    rcall usart_send
+.endmacro
+
+; no parameter
+.macro PRINTEOL
+    rcall print_eol
+.endmacro
+
+; @0 - byte
+.macro PRINTB
+    ldi r16, @0
+    rcall usart_send
 .endmacro
 
 ; @0 - wdt prescaler

@@ -68,7 +68,6 @@ rjmp _def
 
 _main:
 ;wdr
-    ldi r16, 20
     DELAY 11, 99, 24
     PRINTD msg_data
 
@@ -76,24 +75,20 @@ _main:
 
     PRINTV var, 3
 
-    rcall print_eol
+    PRINTEOL
 
-    ldi ZL, 0
-    ldi ZH, 0
-    rcall in_eeprom_read
-    mov r16, r20
-    rcall usart_send
+    EEPROM_R 0
 
-    cpi r16, 8
+    cpi r20, 8
         brne _n1
-        ldi r16, '1'
-        rcall usart_send
+        PRINTB '1'
         rjmp def
     _n1:
-        ldi r16, 8
-        rcall in_eeprom_write
-        ldi r16, '0'
-        rcall usart_send
+        mov r16, r20
+        rcall to_str_hex
+        PRINTR r20
+        PRINTR r21
+        EEPROM_W 0, 8
     def:
     rcall print_eol
 rjmp _main
