@@ -20,7 +20,7 @@
 .endmacro
 
 ; @0 - variable
-.macro PRINTD
+.macro PRINTS
     ldi ZL, low(@0 * 2)
     ldi ZH, high(@0 * 2)
     rcall print_data
@@ -43,7 +43,10 @@
 
 ; no parameter
 .macro PRINTEOL
-    rcall print_eol
+    ldi r16, $A
+    rcall usart_send
+    ldi r16, $D
+    rcall usart_send
 .endmacro
 
 ; @0 - byte

@@ -57,21 +57,21 @@ reset:
 in r16, MCUCSR
 cpi r16, 1<<WDRF
 brne _init
-PRINTD msg_wdt_reset
+PRINTS msg_wdt_reset
 rjmp _def
     _init:
-    PRINTD msg_init
+    PRINTS msg_init
     _def:
-    rcall print_eol
+    PRINTEOL
 
     ;START_WDT 4
 
 _main:
 ;wdr
     DELAY 11, 99, 24
-    PRINTD msg_data
+    PRINTS msg_data
 
-    PRINTD msg_address
+    PRINTS msg_address
 
     PRINTV var, 3
 
@@ -90,7 +90,7 @@ _main:
         PRINTR r21
         EEPROM_W 0, 8
     def:
-    rcall print_eol
+    PRINTEOL
 rjmp _main
 
 usart_rx_int:

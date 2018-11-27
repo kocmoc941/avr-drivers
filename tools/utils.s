@@ -51,14 +51,6 @@ print_byte:
 
     ret
 
-print_eol:
-    ldi r16, $A
-    rcall usart_send
-    ldi r16, $D
-    rcall usart_send
-
-    ret
-
 hex_data: .db '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' \
                 , 'A', 'B', 'C', 'D', 'E', 'F'
 
