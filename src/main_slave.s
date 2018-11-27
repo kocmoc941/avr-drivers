@@ -68,7 +68,7 @@ rjmp _def
 
 _main:
 ;wdr
-    DELAY 11, 99, 24
+    DELAY $18630B
     PRINTS msg_data
 
     PRINTS msg_address

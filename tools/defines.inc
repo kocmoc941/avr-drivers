@@ -79,9 +79,9 @@
 ; @1 - middle nested cycle
 ; @2 - external cycle
 .macro DELAY
-    ldi r20, @0
-    ldi r21, @1
-    ldi r22, @2
+    ldi r20, low(@0)
+    ldi r21, high(@0)
+    ldi r22, byte3(@0)
     _delay_ms:
         dec r20
         brne _delay_ms
