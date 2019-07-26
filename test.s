@@ -3,7 +3,7 @@
 	#message "already exist"
 #endif
 .include "startup.asm"
-.include "init_gpio.asm"
+.include "ext_int.asm"
 
 .cseg
 
@@ -26,10 +26,10 @@ m_init_vtor VEC_INT1, INT1_
 ;ldi r16, $10
 ;out TCNT0, r16
 
-GPIO_SET_FRONT FRONT_ANY
-GPIO_ENABLE INT0
+EXT_SET_FRONT FRONT_ANY
+EXT_ENABLE INT0
 
-GPIO_DISABLE INT1
+EXT_DISABLE INT1
 
 
 sbi DDRB, PORTB0
