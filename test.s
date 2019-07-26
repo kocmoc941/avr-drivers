@@ -26,11 +26,10 @@ m_init_vtor VEC_INT1, INT1_
 ;ldi r16, $10
 ;out TCNT0, r16
 
-EXT_SET_FRONT FRONT_ANY
+EXT_SET_FRONT FRONT_ANY_INT1
 EXT_ENABLE INT0
 
-EXT_DISABLE INT1
-
+EXT_ENABLE INT1
 
 sbi DDRB, PORTB0
 
@@ -54,11 +53,5 @@ for_debug
 reti
 
 INT1_:
-;for_debug
-ldi r16, (1<<INT0)
-out GICR, r16
-
-in r16, MCUCR
-ori r16, (1<<ISC00)
-out MCUCR, r16
+for_debug
 reti
