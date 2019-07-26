@@ -1,6 +1,6 @@
 
 #if defined(ATmega8A)
-	#message "already exist"
+    #message "already exist"
 #endif
 .include "startup.asm"
 .include "ext_int.asm"
@@ -45,9 +45,9 @@ main_loop:
 ;for_debug
 rjmp main_loop
 
-	TIM0_OVF: 
-	;for_debug
-	reti
+    TIM0_OVF: 
+    ;for_debug
+    reti
 
 INT0__:
 for_debug
