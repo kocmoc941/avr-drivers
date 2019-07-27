@@ -71,13 +71,13 @@
 	.equ VEC_TIM2_COMP 	= $03
 	.equ VEC_TIM2_OVF 	= $04
 	.equ VEC_TIM1_CAPT 	= $05
-	.equ VEC_TIM1_COMPA 	= $06
-	.equ VEC_TIM1_COMPB 	= $07
+	.equ VEC_TIM1_COMPA	= $06
+	.equ VEC_TIM1_COMPB	= $07
 	.equ VEC_TIM1_OVF 	= $08
 	.equ VEC_TIM0_OVF 	= $09
 	.equ VEC_SPI_STC 	= $0A
 	.equ VEC_USART_RXC 	= $0B
-	.equ VEC_USART_UDRE 	= $0C
+	.equ VEC_USART_UDRE	= $0C
 	.equ VEC_USART_TXC 	= $0D
 	.equ VEC_ADC 		= $0E
 	.equ VEC_EE_RDY 	= $0F

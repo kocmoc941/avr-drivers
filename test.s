@@ -2,6 +2,7 @@
 .include "ext_int.asm"
 .include "spi.asm"
 .include "wdt.asm"
+.include "usart.asm"
 
 .cseg
 
@@ -26,6 +27,9 @@ SPI_SET_CLK_RATE SPI_DIV_4
 SPI_ENABLE
 SPI_SEND_BYTE '\10'
 
+USART_SET_BAUD_RATE 9600
+USART_ENABLE
+
 ;ldi r16, (1<<CS01 | 0<<CS00)
 ;out TCCR0, r16
 ;ldi r16, (1<<TOIE0)
@@ -39,10 +43,6 @@ EXT_ENABLE INT0
 EXT_ENABLE INT1
 
 sbi DDRB, PORTB0
-
-;rjmp next_ramp
-;.db "qwdqwdwqd",0
-;next_ramp:
 
 init_debug
 sei
