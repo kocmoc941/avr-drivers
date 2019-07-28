@@ -21,6 +21,9 @@
 .equ SPI_DIV_128 = (1<<SPR1 | 1<<SPR0)
 
 .macro SPI_ENABLE
+    sbi DDRB, PORTB3
+    sbi DDRB, PORTB5
+    cbi DDRB, PORTB4
     in r16, SPCR
     ori r16, (1<<SPIE | 1<<SPE)
     out SPCR, r16

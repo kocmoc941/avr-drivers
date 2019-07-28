@@ -11,8 +11,7 @@
 .equ WDT_OC_2048K = $7
 
 .macro WDT_ENABLE
-    in r16, WDTCR
-    sbr r16, (1<<WDE)
+    ldi r16, (1<<WDE)
     out WDTCR, r16
 .endm
 
@@ -20,14 +19,15 @@
     in r16, WDTCR
     sbr r16, (1<<WDCE | 1<<WDE)
     out WDTCR, r16
-    cbr r16, (1<<WDE)
+    cbr r16, (1<<WDCE | 1<<WDE)
     out WDTCR, r16
 .endm
 
 .macro WDT_SET_TIM
     in r16, WDTCR
-    cbr r16, (@0)
-    sbr r16, (@0)
+    sbr r16, (1<<WDCE | 1<<WDE)
+    out WDTCR, r16
+    ldi r16, @0
     out WDTCR, r16
 .endm
 #endif ; __WDT__ASM
