@@ -29,7 +29,7 @@
     out SPCR, r16
 .endm
 
-/* Parms: 1) MSB or LSB
+/* Parms: 1) SPI_MSB or SPI_LSB
 */
 .macro SPI_DATA_ORDER
     in r16, SPCR
