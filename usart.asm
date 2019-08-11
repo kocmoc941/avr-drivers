@@ -26,8 +26,8 @@
 
 .macro USART_ENABLE
     ;RXCIE/TXCIE/UDRIE/RXEN/TXEN/UCSZ2/RXB8/TXB8
-    ;ldi r16, 0b11111000
-    ldi r16, 0b00001000
+    ldi r16, 0b11010000
+    ;ldi r16, 0b00001000
     out UCSRB, r16
 .endm
 
