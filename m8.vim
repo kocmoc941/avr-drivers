@@ -160,12 +160,16 @@ syn match val "\<0b[0-1]\+\>"
 syn match val "\<0x[0-F]\+\>"
 syn match val "\$\<[0-F]\+\>"
 
+syn match str "'.*'"
+syn match str "\".*\""
+
 syn match lab "\<[_a-zA-Z][_-a-zA-Z0-9]*\>:"
 hi def link mnem Statement
 hi def link comm Comment
 hi def link reg Type
 hi def link lab Label
 hi def link val Constant
+hi def link str Constant
 hi def link prec Statement
 hi def link prep Preproc
 
