@@ -1,7 +1,11 @@
 
-syn match reg "r\d\d\?"
-
 syn case ignore
+
+syn match reg "\<r\d\d\?\>"
+syn match reg "\<x[lh]\?\>"
+syn match reg "\<y[lh]\?\>"
+syn match reg "\<z[lh]\?\>"
+
 syn keyword mnem ADD
 syn keyword mnem ADC
 syn keyword mnem ADIW
