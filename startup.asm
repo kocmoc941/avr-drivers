@@ -21,6 +21,10 @@
 .endm
 
 .macro for_debug
+    push ZL
+    push ZH
+    push r16
+    push r17
 	ldi ZH, high(DEBUG)
 	ldi ZL, low(DEBUG)
 	ld r16, Z+
@@ -28,10 +32,10 @@
 	eor r16, r17
 	st -Z, r16
 	out PORTB, r16
-	;ldi r16, $20
-	;_delay_:
-	;dec r16
-	;brne _delay_
+    pop r17
+    pop r16
+    pop ZH
+    pop ZL
 .endm
 
 .macro __GO_VTOR__ ; one parameter is number of VTOR
