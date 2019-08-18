@@ -71,15 +71,49 @@ ret
     push YL
     push YH
     push r16
+    push r17
     ldi XH, high(@0 * 2)
     ldi XL, low(@0 * 2)
     ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
+
+    ; PTR_LOW
+    ldd r16, Y+1
+    tst r16
+    breq __usart_next_check
+    rjmp __usart_is_progress
+
+    __usart_next_check:
+        ; PTR_HIGH
+        ldd r16, Y+2
+        tst r16
+        breq __usart_init_str
+
+    __usart_is_progress:
+       ld r16, Y
+       tst r16
+       breq __usart_init_str
+    
+       ldd ZL, Y+1
+       ldd ZH, Y+2
+       lpm r16, Z
+       tst r16
+       rjmp __usart_init_str
+
+       add YL, r17
+       clr r17
+       adc YH, r17
+       ld r16, Y
+       tst r16
+       brne __usart_skip_print
+
+    __usart_init_str:
     clr r16
-    clr r17
     st Y+, r16 ; letter pointer
     st Y+, XL
     st Y, XH
+    __usart_skip_print:
+    pop r17
     pop r16
     pop YH
     pop YL
@@ -115,13 +149,8 @@ task_usart_handler:
     sbiw Y, 2
     st Y, r16
     __set_busy 1
-    rjmp __usart_next
+    
     __usart_skip:
-    clr r16
-    sbiw Y, 2
-    st Y, r16
-
-    __usart_next:
     pop r16
     pop r17
     pop YH

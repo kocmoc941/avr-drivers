@@ -51,6 +51,7 @@ cbi DDRC, PORTC0
 USART_SEND_STR adc_str
 main_loop:
 
+USART_SEND_STR adc_str
 rcall delay_
 ;ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_DISABLE
 rcall task_usart_handler
@@ -62,12 +63,13 @@ rjmp main_loop
 delay_:
     push ZL
     push ZH
-    ldi ZL, $1F
-    ldi ZH, $F
+    ldi ZL, $00
+    ldi ZH, $00
     delay__s:
-    dec ZL
-    brne delay__s
-    dec ZH
+    ;dec ZL
+    ;brne delay__s
+    ;dec ZH
+    adiw Z, 1
     brne delay__s
     pop ZH
     pop ZL
