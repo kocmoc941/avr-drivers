@@ -1,0 +1,7 @@
+:source conf.source
+:arg test.s adc.asm
+:bufdo vsp
+:windo set syn=m8
+w
+:close
+
