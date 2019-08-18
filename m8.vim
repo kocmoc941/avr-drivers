@@ -203,9 +203,6 @@ syn match lab "\<[_a-zA-Z][_-a-zA-Z0-9]*\>:"
 
 syn case match
 
-syn match todo "\<TODO\>"
-syn match err "^;.*$" contains=todo skipwhite
-
 hi def link err Warning
 
 hi def link mnem Statement

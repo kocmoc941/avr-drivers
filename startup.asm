@@ -1,5 +1,5 @@
-.ifndef __STARTUP__ASM
-.equ __STARTUP__ASM = 1
+#ifndef __STARTUP__ASM
+#define __STARTUP__ASM
 
 .equ F_CPU = 8000000 ; 8 MHz
 
@@ -13,11 +13,17 @@
 .message "Compiling Atmega8A device"
 
 .macro init_debug
+    push ZL
+    push ZH
+    push r16
 	ldi r16, $1
 	ldi ZH, high(DEBUG)
 	ldi ZL, low(DEBUG)
 	st Z+, r16
 	st Z, r16
+    pop r16
+    pop ZH
+    pop ZL
 .endm
 
 .macro for_debug
@@ -39,18 +45,38 @@
 .endm
 
 .macro __GO_VTOR__ ; one parameter is number of VTOR
+    push YL
+    push YH
+    push ZL
+    push ZH
 	ldi YL, LOW(VTOR)
 	ldi YH, HIGH(VTOR)
 	ldd ZL, Y+@0*2
 	ldd ZH, Y+@0*2+1
-	cpi ZL, $FF
+	cpi ZL, $00
 	brne jump_to_usr_int
-	cpi ZH, $FF
+	cpi ZH, $00
 	brne jump_to_usr_int
+    pop ZH
+    pop ZL
+    pop YH
+    pop YL
 	reti
 
 	jump_to_usr_int:
-	ijmp
+    mov r16, ZL
+    mov r17, ZH
+    pop ZH
+    pop ZL
+    pop YH
+    pop YL
+    ; for stack balance
+    pop r16
+    pop r16
+    mov r16, ZL
+    push r16
+    push r17
+	reti
 
 .endm
 
@@ -58,12 +84,20 @@
 		2) value;
 */
 .macro m_init_vtor
+    push r16
+    push r17
+    push ZL
+    push ZH
 	ldi r16, low(@1)
 	ldi r17, high(@1)
 	ldi ZL, LOW(VTOR)
 	ldi ZH, HIGH(VTOR)
 	std Z+@0*2, r16
 	std Z+@0*2 + 1, r17
+    pop ZH
+    pop ZL
+    pop r17
+    pop r16
 .endm
 
 .if device == m8a
@@ -140,6 +174,9 @@
 		__USART_UDRE__:
 			__GO_VTOR__ $VEC_USART_UDRE
 		__USART_TXC__:
+        .ifdef __USART__ASM
+            rcall __usart_txc_callback
+        .endif
 			__GO_VTOR__ $VEC_USART_TXC
 		__ADC__:
 			__GO_VTOR__ $VEC_ADC
@@ -153,6 +190,6 @@
 			__GO_VTOR__ $VEC_SPM_RDY
 
 .endif ; m8a
-.else
-.warning "File:" __FILE__" already included"
-.endif
+#else
+#warning "File:" __FILE__" already included"
+#endif ; __STARTUP__ASM

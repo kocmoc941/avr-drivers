@@ -3,12 +3,11 @@
 .include "usart.asm"
 .include "adc.asm"
 
-.cseg
+.dseg
+adc_data: .byte 2
 
-adc_str: .db "ADC:"
-adc_data: .dw 0x3132
-.db '\r','\n'
-.equ adc_str_len = (pc - adc_str) * 2
+.cseg
+adc_str: .db "TRACE__WARNING: successfully", '\r', 0
 
 main:
     ldi r16, high(RAMEND)
@@ -18,7 +17,7 @@ main:
 
 m_init_vtor VEC_USART_RXC, 	USART_RXC
 m_init_vtor VEC_USART_UDRE,	USART_UDRE
-m_init_vtor VEC_USART_TXC, 	USART_TXC
+;m_init_vtor VEC_USART_TXC, 	USART_TXC
 m_init_vtor VEC_ADC, ADC_COMPLETE
 
 ;WDT_SET_TIM WDT_OC_16K
@@ -32,55 +31,39 @@ sbi DDRB, PORTB0
 init_debug
 sei
 
-sbi UCSRB, TXEN
+;sbi UCSRB, TXEN
 ;sbi UCSRB, UDRIE
 
-ADC_VOLTAGE_SELECT ADC_VOLTAGE_AVCC_EXT_CAP_AT_AREF
-ADC_SELECT_CHANNEL ADC0
-ADC_SET_CLK ADC_PRES_2
-ADC_ENABLE ADC_LEFT_ADJ_ENABLE
-ADC_START_CONV ADC_LEFT_ADJ_ENABLE
+;ADC_VOLTAGE_SELECT ADC_VOLTAGE_AVCC_EXT_CAP_AT_AREF
+;ADC_SELECT_CHANNEL ADC0
+;ADC_SET_CLK ADC_PRES_2
+;ADC_ENABLE ADC_LEFT_ADJ_ENABLE
+;ADC_START_CONV ADC_LEFT_ADJ_ENABLE
 
-ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_ENABLE
+;ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_DISABLE
 
 cbi DDRC, PORTC0
 
-.def usart_busy = r20
 .def adc_success = r21
 .def adc1_data = r24
 .def adc2_data = r25
 
-clr r17
-clr usart_busy
+USART_SEND_STR adc_str
 main_loop:
-rcall delay_
-rcall delay_
-tst adc_success
-breq main_loop
 
-ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_DISABLE
-tst usart_busy
-brne main_loop
+rcall delay_
+;ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_DISABLE
+rcall task_usart_handler
+;clr adc_success
+;ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_ENABLE
 
-ldi usart_busy, 1
-ldi ZH, high(adc_str * 2)
-ldi ZL, low(adc_str * 2)
-add ZL, r17
-lpm r16, Z
-out UDR, r16
-inc r17
-cpi r17, adc_str_len
-brne main_loop
-clr r17
-clr adc_success
-ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_ENABLE
 rjmp main_loop
 
 delay_:
     push ZL
     push ZH
-    ldi ZL, $FF
-    ldi ZH, $FF
+    ldi ZL, $1F
+    ldi ZH, $F
     delay__s:
     dec ZL
     brne delay__s
@@ -91,10 +74,7 @@ delay_:
     ret
 
 ADC_COMPLETE:
-for_debug
-;in adc1_data, ADCL
-;in adc2_data, ADCH
-ldi adc_success, 1
+;for_debug
 reti
 
 USART_RXC:
@@ -104,7 +84,6 @@ USART_UDRE:
 reti
 
 USART_TXC:
-for_debug
-clr usart_busy
+;for_debug
 reti
 
