@@ -53,6 +53,7 @@ main_loop:
 
 USART_SEND_STR adc_str
 rcall delay_
+rcall delay_
 ;ADC_FREE_RUNNING_SELECT ADC_LEFT_ADJ_DISABLE
 rcall task_usart_handler
 ;clr adc_success

@@ -1,7 +1,9 @@
 :source conf.source
-:arg test.s adc.asm
+:arg test.s usart.asm
 :bufdo vsp
 :windo set syn=m8
 w
 :close
+
+!./avrasm2.exe -Iinc -fI test.s -mmap -llist
 

@@ -57,11 +57,14 @@
 .dseg
     __usart_busy: .byte 1
     __usart_strs: .byte 3 * 64
+    __usart_strs_end:
+    .equ __usart_strs_len = (__usart_strs - __usart_strs_end) / 3
+    __usart_current_str_id: .byte 1
 
 .cseg
 
 __usart_txc_callback:
-    for_debug
+    ;for_debug
     __set_busy 0
 ret
 
@@ -77,6 +80,7 @@ ret
     ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
 
+rjmp __usart_init_str
     ; PTR_LOW
     ldd r16, Y+1
     tst r16
@@ -121,42 +125,95 @@ ret
     pop XL
 .endm
 
+.def cnt = r16
+.def tmp = r17
+;#define __str_addr_low = XL
+;#define __str_addr_high = XH
+;#define __str_data_low = YL
+;#define __str_data_high = YH
+
 task_usart_handler:
     push ZL
     push ZH
     push YL
     push YH
-    push r17
-    push r16
+    push XL
+    push XH
+    push tmp
+    push cnt
     __get_busy
-    tst r16
+    tst cnt
     brne __usart_skip
 
+    ; select str
+    ldi XH, high(__usart_current_str_id)
+    ldi XL, low(__usart_current_str_id)
+    ld cnt, X
+    ldi tmp, __usart_strs_len
+    sub tmp, cnt
+    brcs __usart_clr_str_id
+    inc cnt
+    rjmp __usart_next_str
+    __usart_clr_str_id:
+    clr cnt
+    __usart_next_str:
+    st X, cnt
+
+    ; handle selected str
     ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
-    ld r16, Y+
+    ldi tmp, $3
+    push cnt
+    mul cnt, tmp
+    add YL, cnt
+    clr tmp
+    adc YH, tmp
+    pop cnt
+
+    tst YH
+    brne __usart_handle_str
+    tst YL
+    breq __usart_skip
+
+    __usart_handle_str:
+
+    ld cnt, Y+ ; load printed letter counter
     ld ZL, Y+
     ld ZH, Y
-    clr r17
-    add ZL, r16
-    adc ZH, r17
+    clr tmp
+    add ZL, cnt
+    adc ZH, tmp
 
-    lpm r17, Z
-    tst r17
-    breq __usart_skip
-    out UDR, r17
-    inc r16
-    sbiw Y, 2
-    st Y, r16
+    lpm tmp, Z
+    tst tmp
+    breq __usart_del_str
+    out UDR, tmp
     __set_busy 1
+    sbiw Y, 2
+    inc cnt
+    st Y, cnt
+    rjmp __usart_skip
+
+    __usart_del_str:
+
+    clr cnt
+    clr tmp
+    st X, cnt
+    std Y+0, tmp
+    std Y+1, tmp
+    std Y+2, tmp
     
     __usart_skip:
-    pop r16
-    pop r17
+    pop cnt
+    pop tmp
+    pop XH
+    pop XL
     pop YH
     pop YL
     pop ZH
     pop ZL
 ret
+.undef cnt
+.undef tmp
 
 #endif ;__USART__ASM
