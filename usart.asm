@@ -80,7 +80,6 @@ ret
     ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
 
-rjmp __usart_init_str
     ; PTR_LOW
     ldd r16, Y+1
     tst r16
@@ -142,44 +141,47 @@ task_usart_handler:
     push tmp
     push cnt
     __get_busy
-    tst cnt
+    tst r16
     brne __usart_skip
 
     ; select str
+    rjmp __skip_select_str
     ldi XH, high(__usart_current_str_id)
     ldi XL, low(__usart_current_str_id)
     ld cnt, X
     ldi tmp, __usart_strs_len
     sub tmp, cnt
     brcs __usart_clr_str_id
-    inc cnt
+    mov tmp, cnt
+    ;inc cnt
+    ;inc cnt
+    ;inc cnt
     rjmp __usart_next_str
     __usart_clr_str_id:
     clr cnt
     __usart_next_str:
-    st X, cnt
+    ;st X, cnt
 
+    __skip_select_str:
     ; handle selected str
-    ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
-    ldi tmp, $3
-    push cnt
-    mul cnt, tmp
-    add YL, cnt
+    ldi YH, high(__usart_strs)
+    add YL, tmp
     clr tmp
     adc YH, tmp
-    pop cnt
 
-    tst YH
+    ldd tmp, Y+1
+    tst tmp
     brne __usart_handle_str
-    tst YL
+    ldd tmp, Y+2
+    tst tmp
     breq __usart_skip
 
     __usart_handle_str:
 
-    ld cnt, Y+ ; load printed letter counter
-    ld ZL, Y+
-    ld ZH, Y
+    ldd cnt, Y+0 ; load printed letter counter
+    ldd ZL, Y+1
+    ldd ZH, Y+2
     clr tmp
     add ZL, cnt
     adc ZH, tmp
@@ -188,10 +190,9 @@ task_usart_handler:
     tst tmp
     breq __usart_del_str
     out UDR, tmp
-    __set_busy 1
-    sbiw Y, 2
     inc cnt
     st Y, cnt
+    __set_busy 1
     rjmp __usart_skip
 
     __usart_del_str:
@@ -199,7 +200,7 @@ task_usart_handler:
     clr cnt
     clr tmp
     st X, cnt
-    std Y+0, tmp
+    st Y, tmp
     std Y+1, tmp
     std Y+2, tmp
     

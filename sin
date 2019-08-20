@@ -1,3 +1,6 @@
+:set lines=36
+:set columns=126
+
 :source conf.source
 :arg test.s usart.asm
 :bufdo vsp
@@ -5,5 +8,5 @@
 w
 :close
 
-!./avrasm2.exe -Iinc -fI test.s -mmap -llist
+:!./avrasm2.exe -Iinc -fI test.s -mmap -llist
 
