@@ -80,19 +80,14 @@ ret
     ldi YH, high(__usart_strs)
     ldi YL, low(__usart_strs)
 
-    ; PTR_LOW
+    ; STR PTR
     ldd r16, Y+1
+    ldd r17 ,Y+2
+    add r16, r17
     tst r16
-    breq __usart_next_check
-    rjmp __usart_is_progress
+    breq __usart_init_str
 
-    __usart_next_check:
-        ; PTR_HIGH
-        ldd r16, Y+2
-        tst r16
-        breq __usart_init_str
-
-    __usart_is_progress:
+    __usart_handle:
        ld r16, Y
        tst r16
        breq __usart_init_str
@@ -103,6 +98,7 @@ ret
        tst r16
        rjmp __usart_init_str
 
+       ldi r17, $1
        add YL, r17
        clr r17
        adc YH, r17
@@ -145,7 +141,7 @@ task_usart_handler:
     brne __usart_skip
 
     ; select str
-    rjmp __skip_select_str
+    ;rjmp __skip_select_str
     ldi XH, high(__usart_current_str_id)
     ldi XL, low(__usart_current_str_id)
     ld cnt, X

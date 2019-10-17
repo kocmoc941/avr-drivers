@@ -71,9 +71,8 @@
     pop YH
     pop YL
     ; for stack balance
-    pop r16
-    pop r16
-    mov r16, ZL
+    pop ZL
+    pop ZL
     push r16
     push r17
 	reti
